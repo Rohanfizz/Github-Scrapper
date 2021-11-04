@@ -32,7 +32,7 @@ function work(url,folderPath){
                         }
                         ans.push(issueObject);
                     }
-                    console.table(ans);
+                    // console.table(ans);
                     let json = JSON.stringify(ans);
                     fs.writeFileSync(path.join(folderPath,(repoName+".json")),json);
             
