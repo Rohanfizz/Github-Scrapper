@@ -11,11 +11,8 @@ function workForOneTopic(url){
         else{
             let cheerioSelector = cheerio.load(html);
             let topicName = cheerioSelector(".h1").text().trim();
-            let newFolder = path.join('./Answer',topicName);
-            fs.mkdir(newFolder,function cb(err){
-                if(err) console.log(err);
-                else console.log('Folder Made')
-            });
+            let newFolder = path.join("./Answer",topicName);
+            if(fs.existsSync(newFolder) == false) fs.mkdirSync(newFolder);
 
             let topicRepos = cheerioSelector(".f3.color-fg-muted.text-normal.lh-condensed");
             for(let i = 0;i<8;i++){
@@ -23,7 +20,6 @@ function workForOneTopic(url){
                 repoLink ="https://github.com"+ cheerioSelector(repoLink[1]).attr('href');
                 // console.log(repoLink);
                 makeJsonRepos.singleRepo(repoLink,newFolder);
-
             }
 
         }

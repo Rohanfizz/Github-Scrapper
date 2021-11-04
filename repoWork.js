@@ -21,23 +21,29 @@ function work(url,folderPath){
                 else{
                     let cheerioSelector = cheerio.load(html);
                     let issues = cheerioSelector('.flex-auto.min-width-0.p-2.pr-3.pr-md-2>a');
-                    let ans = "";
+                    let ans = [];
+                    
                     for(let i = 0;i<issues.length;i++){
-                        ans += i + " " + cheerioSelector(issues[i]).text() +"\n";
+                        let issueLink = "https://github.com" +cheerioSelector(issues[i]).attr('href') +"\n";
+                        let issueName = cheerioSelector(issues[i]).text();
+                        let issueObject = {
+                            Name: issueName,
+                            Link: issueLink
+                        }
+                        ans.push(issueObject);
                     }
-                    // console.log(ans);
-                    fs.writeFileSync(path.join(folderPath,(repoName+".json")),ans);
+                    console.table(ans);
+                    let json = JSON.stringify(ans);
+                    fs.writeFileSync(path.join(folderPath,(repoName+".json")),json);
+            
                 }
             }
-            
-
             // fs.writeFileSync(path.join(folderPath,(repoName+".json")),filler(url+"/issues"));
+            
         }
     }
 }
-function filler(url){
-    
-}
+
 
 module.exports = {
     singleRepo : work
